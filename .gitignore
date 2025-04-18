@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Test/Multiplication/.vs/Multiplication
+/.gitignore
+/Test/Multiplication/bin/Debug/net8.0
