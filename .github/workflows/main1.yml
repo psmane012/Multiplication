@@ -1,0 +1,30 @@
+name: Build and Deploy Multiplication App
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore Test/Multiplication/Multiplication.csproj
+
+    - name: Build
+      run: dotnet build Test/Multiplication/Multiplication.csproj --configuration Release
+
+    - name: Test
+      run: dotnet test Test/Multiplication/Multiplication.csproj --no-restore --verbosity normal
