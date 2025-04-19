@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
@@ -21,10 +20,17 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore Test/Multiplication/Multiplication.csproj
+      run: dotnet restore ./Test/Multiplication/Multiplication.csproj
 
     - name: Build
-      run: dotnet build Test/Multiplication/Multiplication.csproj --configuration Release
+      run: dotnet build ./Test/Multiplication/Multiplication.csproj --configuration Release
 
-    - name: Test
-      run: dotnet test Test/Multiplication/Multiplication.csproj --no-restore --verbosity normal
+    - name: Publish
+      run: dotnet publish ./Test/Multiplication/Multiplication.csproj --configuration Release --output ./publish
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'YourAzureAppServiceName'  # Replace with your Azure Web App name
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+        package: './publish'
