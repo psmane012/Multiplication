@@ -1,0 +1,30 @@
+name: Build and Deploy Multiplication App
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'  # Make sure your project uses .NET 8
+
+    - name: Restore dependencies
+      run: dotnet restore Multiplication.sln
+
+    - name: Build
+      run: dotnet build Multiplication.sln --configuration Release
+
+    - name: Test
+      run: dotnet test Multiplication.sln --no-restore --verbosity normal
